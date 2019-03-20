@@ -28,101 +28,78 @@ _LOGGER = logging.getLogger(__name__)
 DEFAULT_HOST = '192.168.1.1'
 DEFAULT_PORT = '5000'
 
-MIN_TIME_BETWEEN_UPDATES = timedelta(seconds=30)
+MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=1)
 
 SENSOR_TYPES = {
-    'getInfo': [
-        'Info',
-        'ModelName',
-        'mdi:router-wireless'],
-    'check_new_firmware': [
-        'Firmware',
-        'CurrentVersion',
-        'mdi:cellphone-link'],
-    'get_attached_devices': [
-        'Attached Devices',
-        '',
-        'mdi:cellphone-link'],
-    'get_attached_devices_2': [
-        'Attached Devices2',
-        '',
-        'mdi:cellphone-link'],
-    'get_traffic_meter_statistics': [
-        'Traffic Meter',
-        'NewTodayConnectionTime',
-        'mdi:chart-areaspline'],
-    'getSupportFeatureListXML': [
-        'Supported Features',
-        '',
-        'mdi:router-wireless-settings'],
-    'get_bandwidth_control_options': [
-        'Bandwidth Control',
-        '',
-        'mdi:router-wireless-settings'],
-    'getQoSEnableStatus': [
-        'QOS Enabled',
-        'NewQoSEnableStatus',
-        'mdi:router-wireless-settings'],
-    'get_all_mac_addresses': [
-        'All MAC Addresses',
-        '',
-        'mdi:router-wireless-settings'],
-    'get_dns_masq_device_id': [
-        'DNS Masq',
-        '',
-        'mdi:router-wireless-settings'],
-    'get_traffic_meter_enabled': [
-        'Traffic Meter Enabled',
-        'NewTrafficMeterEnable',
-        'mdi:chart-areaspline'],
-    'get_traffic_meter_options': [
-        'Traffic Meter Opt',
-        'NewControlOption',
-        'mdi:chart-areaspline'],
-    'get_guest_access_enabled': [
-        'Guest Access',
-        'NewGuestAccessEnabled',
-        'mdi:account-group'],
-    'get_5g1_guest_access_enabled': [
-        '5G1 Guest Access',
-        'NewGuestAccessEnabled',
-        'mdi:account-group'],
-    'get_5g1_guest_access_enabled_2': [
-        '5G1 Guest Access2',
-        'NewGuestAccessEnabled',
-        'mdi:account-group'],
-    'get_5g_guest_access_enabled_2': [
-        '5G1 Guest Access2',
-        'NewGuestAccessEnabled',
-        'mdi:account-group'],
-    'get_wpa_security_keys': [
-        'WPA Security Key',
-        'NewWPAPassphrase',
-        'mdi:security'],
-    'get_5g_wpa_security_keys': [
-        '5G WPA Security Key',
-        'NewWPAPassphrase',
-        'mdi:security'],
+    'info': [
+        'Info', 'ModelName',
+        'mdi:router-wireless', 'getInfo'],
+    'check_fw': [
+        'Firmware', 'CurrentVersion',
+        'mdi:cellphone-link', 'check_new_firmware'],
+    'attached_devices': [
+        'Attached Devices', '',
+        'mdi:cellphone-link', 'get_attached_devices'],
+    'attached_devices2': [
+        'Attached Devices2', '',
+        'mdi:cellphone-link', 'get_attached_devices_2'],
+    'traffic_meter': [
+        'Traffic Meter', 'NewTodayConnectionTime',
+        'mdi:chart-areaspline', 'get_traffic_meter_statistics'],
+    'support_feature': [
+        'Supported Features', '',
+        'mdi:router-wireless-settings', 'getSupportFeatureListXML'],
+    'bw_control': [
+        'Bandwidth Control', '',
+        'mdi:router-wireless-settings', 'get_bandwidth_control_options'],
+    'qos_enabled': [
+        'QOS Enabled', 'NewQoSEnableStatus',
+        'mdi:router-wireless-settings', 'getQoSEnableStatus'],
+    'mac_address': [
+        'All MAC Addresses', '',
+        'mdi:router-wireless-settings' 'get_all_mac_addresses'],
+    'dns_masq': [
+        'DNS Masq', '',
+        'mdi:router-wireless-settings', 'get_dns_masq_device_id'],
+    'traffic_meter_enabled': [
+        'Traffic Meter Enabled', 'NewTrafficMeterEnable',
+        'mdi:chart-areaspline', 'get_traffic_meter_enabled'],
+    'traffic_meter_options': [
+        'Traffic Meter Opt', 'NewControlOption',
+        'mdi:chart-areaspline', 'get_traffic_meter_options'],
+    'guest_access': [
+        'Guest Access', 'NewGuestAccessEnabled',
+        'mdi:account-group', 'get_guest_access_enabled'],
+    'guest_access_5g': [
+        '5G1 Guest Access', 'NewGuestAccessEnabled',
+        'mdi:account-group', 'get_5g1_guest_access_enabled'],
+    'guest_access_5g1': [
+        '5G1 Guest Access2', 'NewGuestAccessEnabled',
+        'mdi:account-group', 'get_5g1_guest_access_enabled_2'],
+    'guest_access_5g2': [
+        '5G1 Guest Access2', 'NewGuestAccessEnabled',
+        'mdi:account-group', 'get_5g_guest_access_enabled_2'],
+    'wpa_key': [
+        'WPA Security Key', 'NewWPAPassphrase',
+        'mdi:security', 'get_wpa_security_keys'],
+    'wpa_key_5g': [
+        '5G WPA Security Key', 'NewWPAPassphrase',
+        'mdi:security', 'get_5g_wpa_security_keys'],
     'get_5g_info': [
-        '5G Info',
-        'NewSSID',
-        'mdi:signal-5g'],
+        '5G Info', 'NewSSID',
+        'mdi:signal-5g', 'get_5g_info'],
     'get_2g_info': [
-        '2G Info',
-        'NewSSID',
-        'mdi:signal-2g'],
-    'get_guest_access_network_info': [
-        'Guest Network Info',
-        'NewSSID',
-        'mdi:signal-2g'],
-    'get_5g_guest_access_network_info': [
-        '5G Guest Network Info',
-        'NewSSID',
-        'mdi:signal-5g'],
-    'get_speed_test_result': [
-        'Speed Test Result',
-        'NewOOKLADownlinkBandwidth',
-        'mdi:speedometer'],
+        '2G Info', 'NewSSID',
+        'mdi:signal-2g', 'get_2g_info'],
+    'guest_access_net': [
+        'Guest Network Info', 'NewSSID',
+        'mdi:signal-2g', 'get_guest_access_network_info'],
+    'guest_access_net_5g': [
+        '5G Guest Network Info', 'NewSSID',
+        'mdi:signal-5g', 'get_5g_guest_access_network_info'],
+    'speed_test_result': [
+        'Speed Test Result', 'NewOOKLADownlinkBandwidth',
+        'mdi:speedometer', 'get_speed_test_result'],
 }
 
 
@@ -138,9 +115,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
 })
 
 
-async def async_setup_platform(hass, config, async_add_devices, discovery_info=None):
-    """Setup the sensor platform."""
-
+def setup_platform(hass, config, add_devices, discovery_info=None):
+    """Set up the sensor platform."""
     host = config[CONF_HOST]
     port = config[CONF_PORT]
     username = config[CONF_USERNAME]
@@ -148,47 +124,35 @@ async def async_setup_platform(hass, config, async_add_devices, discovery_info=N
     ssl = config[CONF_SSL]
     resources = config[CONF_RESOURCES]
 
-    _LOGGER.info("NETGEAR: async_setup_platform")
-
-    #for kind in resources:
-    #    add_devices([
-    #        NetgearEnhancedSensor(host, ssl, username, password, port, kind)
-    #        ])
+    _LOGGER.info("NETGEAR: setup_platform")
 
     sensors = []
     for kind in resources:
         sensors.append(NetgearEnhancedSensor(host, ssl, username, password, port, kind))
 
-    async_add_devices(sensors, True)
+    add_devices(sensors, True)
+
 
 class NetgearEnhancedSensor(Entity):
     """Representation of a Sensor."""
 
     def __init__(self, host, ssl, username, password, port, kind):  # noqa
         """Initialize the sensor."""
-        self._kind = kind
+        # self._entity_id = ("ng_enhanced_%s", kind)
         self._name = SENSOR_TYPES[kind][0]
         self._state = None
         self._unit_of_measurement = ''
         self._state_key = SENSOR_TYPES[kind][1]
         self._attrs = None
         self._icon = SENSOR_TYPES[kind][2]
+        self._function = SENSOR_TYPES[kind][3]
 
         from pynetgear_enhanced import Netgear
-
-        self.last_results = []
         self._api = Netgear(password, host, username, port, ssl)
 
-        _LOGGER.info("Logging in")
-
-        results = self._get(kind)
-
-        self.success_init = results is not None
-
-        if self.success_init:
-            self.last_results = results
-        else:
-            _LOGGER.error("Failed to Login")
+    # def entity_id(self):
+       # """Return the entity_id of the sensor."""
+       # return self._entity_id
 
     @property
     def name(self):
@@ -215,21 +179,16 @@ class NetgearEnhancedSensor(Entity):
         """Return the icon of the sensor."""
         return self._icon
 
-    def _get(self, kind):
-        """Get the data from pynetgear_enhanced based on function."""
-        _LOGGER.debug("NETGEAR: _get")
-        response = getattr(self._api, kind)()
-        return response
-
-    # @Throttle(MIN_TIME_BETWEEN_UPDATES)
-    async def async_update(self):
+    @Throttle(MIN_TIME_BETWEEN_UPDATES)
+    def update(self):
         """Fetch new state and attributes for the sensor.
 
         This is the only method that should fetch new data for Home Assistant.
         """
-        _LOGGER.debug("NETGEAR: async_update")
-        self._attrs = self.last_results
+        self.response = getattr(self._api, self._function)()
+
+        self._attrs = self.response
         if self._state_key:
-            self._state = self.last_results[self._state_key]
+            self._state = self.response[self._state_key]
         else:
             self._state = None
