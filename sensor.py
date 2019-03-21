@@ -12,7 +12,7 @@ from datetime import timedelta
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.const import (
     CONF_HOST, CONF_PORT, CONF_USERNAME, CONF_PASSWORD,
-    CONF_SSL, CONF_RESOURCES
+    CONF_SSL, CONF_RESOURCES, CONF_SCAN_INTERVAL
     )
 
 # from homeassistant.exceptions import PlatformNotReady
@@ -28,7 +28,7 @@ _LOGGER = logging.getLogger(__name__)
 DEFAULT_HOST = '192.168.1.1'
 DEFAULT_PORT = '5000'
 
-MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=5)
+SCAN_INTERVAL = timedelta(minutes=5)
 
 SENSOR_TYPES = {
     'check_fw': [
@@ -114,12 +114,14 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     password = config[CONF_PASSWORD]
     ssl = config[CONF_SSL]
     resources = config[CONF_RESOURCES]
+    scan_interval = config.get(CONF_SCAN_INTERVAL, SCAN_INTERVAL)
+
 
     _LOGGER.debug("NETGEAR: setup_platform")
 
     sensors = []
     for kind in resources:
-        sensors.append(NetgearEnhancedSensor(host, ssl, username, password, port, kind))
+        sensors.append(NetgearEnhancedSensor(host, ssl, username, password, port, kind, scan_interval))
 
     add_devices(sensors, True)
 
@@ -127,7 +129,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 class NetgearEnhancedSensor(Entity):
     """Representation of a Sensor."""
 
-    def __init__(self, host, ssl, username, password, port, kind):  # noqa
+    def __init__(self, host, ssl, username, password, port, kind, scan_interval):  # noqa
         """Initialize the sensor."""
         #if isinstance(kind, str):
         #    self._unique_id = "ng_enhanced_%s" % (kind)
@@ -144,6 +146,7 @@ class NetgearEnhancedSensor(Entity):
         self._attrs = None
         self._icon = SENSOR_TYPES[kind][2]
         self._function = SENSOR_TYPES[kind][3]
+        self._scan_interval = scan_interval
 
         from pynetgear_enhanced import Netgear
         self._api = Netgear(password, host, username, port, ssl)
@@ -177,7 +180,6 @@ class NetgearEnhancedSensor(Entity):
         """Return the icon of the sensor."""
         return self._icon
 
-    @Throttle(MIN_TIME_BETWEEN_UPDATES)
     def update(self):
         """Fetch new state and attributes for the sensor.
 
