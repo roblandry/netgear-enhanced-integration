@@ -34,6 +34,9 @@ SENSOR_TYPES = {
     'check_fw': [
         'Firmware', 'CurrentVersion',
         'mdi:cellphone-link', 'check_new_firmware'],
+    'block_device_status': [
+        'Block Device Status', 'NewBlockDeviceEnable',
+        'mdi:router-wireless-settings', 'get_block_device_enable_status'],
     'traffic_meter': [
         'Traffic Meter', 'NewTodayConnectionTime',
         'mdi:chart-areaspline', 'get_traffic_meter_statistics'],

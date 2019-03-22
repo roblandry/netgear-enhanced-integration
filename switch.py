@@ -27,6 +27,9 @@ DEFAULT_PORT = '5000'
 SCAN_INTERVAL = timedelta(minutes=5)
 # Name, onoffFunction, Checkfunction, checkNode
 SWITCH_TYPES = {
+    'block_device': [
+        'Block Device', 'set_block_device_enable',
+        'get_block_device_enable_status', 'NewBlockDeviceEnable'],
     'traffic_meter': [
         'Traffic Meter', 'enable_traffic_meter',
         'get_traffic_meter_enabled', 'NewTrafficMeterEnable'],

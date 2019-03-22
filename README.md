@@ -1,6 +1,7 @@
 # Supported #
 **The supported sensors are:**
 * Check Firmware
+* Block Device Enabled
 * Traffic Meter Statistics
 * Traffic Meter Enabled
 * Traffic Meter Options
@@ -23,6 +24,7 @@
 
 
 **The supported switches are:**
+* Block Device
 * Traffic Meter
 * Parental Control
 * QOS
@@ -45,6 +47,7 @@
     password: !secret my_secret_netgear_pass
     resources:
       - check_fw
+      - block_device_status
       - traffic_meter
       - traffic_meter_enabled
       - traffic_meter_options
