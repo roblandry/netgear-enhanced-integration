@@ -1,10 +1,43 @@
-## Setup ##
+# Supported #
+**The supported sensors are:**
+* Check Firmware
+* Traffic Meter Statistics
+* Traffic Meter Enabled
+* Traffic Meter Options
+* Parental Control Enabled
+* MAC Addresses
+* DNS Masq # Not currently working correctly
+* Get Router Info
+* Supported Features
+* Speed Test Resluts
+* QOS Enabled
+* Bandwidth Control
+* 2.4g Guest Access Enabled
+* 5g Guest Access Enabled
+* 2.4g WPA Key
+* 5g WPA Key
+* 2.4g Info
+* 5g Info
+* 2.4g Guest Network Info
+* 5g Guest Network Info
+
+
+**The supported switches are:**
+* Traffic Meter
+* Parental Control
+* QOS
+* 2.4g Guest WiFi
+* 5g Guest WiFi
+
+
+# Setup #
 * Create the netgear_enhanced folder in custom_components.
-* Place the sensor.py in the netgear_enhanced folder.
+* Copy the sensor.py and switch.py files to the netgear_enhanced folder.
+
+## For sensors ##
 * Place the following code in your config under sensor:
   * Make sure to modify the parameters to fit your needs. It may cause some strain to have too many sensors polling data.
 
-## Currently supported sensors ##
 ```yaml
   - platform: netgear_enhanced
     host: !secret my_secret_ip
@@ -31,4 +64,15 @@
       - get_5g_info
       - guest_access_net
       - guest_access_net_5g
+```
+
+## For switches ##
+* Place the following code in your config under switch:
+  * Make sure to modify the parameters to fit your needs. There may be some delay in updating the switch due to the router changing configuration.
+
+```yaml
+  - platform: netgear_enhanced
+    host: !secret my_secret_ip
+    username: !secret my_secret_netgear_user
+    password: !secret my_secret_netgear_pass
 ```
