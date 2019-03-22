@@ -1,8 +1,8 @@
 """
-Demo platform that has two fake switches.
+Support for Netgear routers.
 
-For more details about this platform, please refer to the documentation
-https://home-assistant.io/components/demo/
+For more details about this platform, please refer to the documentation at
+https://home-assistant.io/components/switch.netgear_enhanced/
 """
 import logging
 
