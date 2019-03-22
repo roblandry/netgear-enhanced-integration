@@ -19,7 +19,7 @@ from homeassistant.const import (
 # from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
-from homeassistant.util import Throttle
+# from homeassistant.util import Throttle
 
 REQUIREMENTS = ['https://github.com/roblandry/pynetgear_enhanced/archive/master.zip#pynetgear_enhanced']  # noqa
 
@@ -116,12 +116,13 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     resources = config[CONF_RESOURCES]
     scan_interval = config.get(CONF_SCAN_INTERVAL, SCAN_INTERVAL)
 
-
     _LOGGER.debug("NETGEAR: setup_platform")
 
     sensors = []
     for kind in resources:
-        sensors.append(NetgearEnhancedSensor(host, ssl, username, password, port, kind, scan_interval))
+        sensors.append(NetgearEnhancedSensor(
+            host, ssl, username, password, port, kind, scan_interval)
+        )
 
     add_devices(sensors, True)
 
@@ -131,11 +132,11 @@ class NetgearEnhancedSensor(Entity):
 
     def __init__(self, host, ssl, username, password, port, kind, scan_interval):  # noqa
         """Initialize the sensor."""
-        #if isinstance(kind, str):
+        # if isinstance(kind, str):
         #    self._unique_id = "ng_enhanced_%s" % (kind)
-        #else:
+        # else:
         #    self._unique_id = None
-        #_LOGGER.debug("ng_enhanced_%s", kind)
+        # _LOGGER.debug("ng_enhanced_%s", kind)
         self._name = f"NG {SENSOR_TYPES[kind][0]}"
         self._state = None
         if len(SENSOR_TYPES[kind]) > 4:
@@ -187,7 +188,7 @@ class NetgearEnhancedSensor(Entity):
         """
         self.response = getattr(self._api, self._function)()
 
-        if self.response: 
+        if self.response:
             if len(self.response) > 1:
                 self._attrs = self.response
 
