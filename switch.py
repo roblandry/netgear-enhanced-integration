@@ -46,6 +46,9 @@ SWITCH_TYPES = {
     '5g_guest_wifi': [
         '5G Guest Wifi', 'set_5g_guest_access_enabled',
         'get_5g_guest_access_enabled', 'NewGuestAccessEnabled'],
+    'run_speed_test': [
+        'Run a Speed Test', 'set_speed_test_start',
+        '', ''],
 }
 
 
@@ -117,6 +120,10 @@ class NetgearEnhancedSwitch(SwitchDevice):
     @property
     def is_on(self):
         """Return true if switch is on."""
+        if self._nfFunction == 'set_speed_test_start':
+            self._state = False
+            return self._state
+
         self.response = getattr(self._api, self._cFunction)()
 
         if self.response:

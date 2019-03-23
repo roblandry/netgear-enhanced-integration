@@ -30,6 +30,7 @@
 * QOS
 * 2.4g Guest WiFi
 * 5g Guest WiFi
+* Run Speed Test (switch will always toggle to off)
 
 
 # Setup #
