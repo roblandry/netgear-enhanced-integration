@@ -15,11 +15,8 @@ from homeassistant.const import (
     CONF_SSL, CONF_RESOURCES, CONF_SCAN_INTERVAL
     )
 
-# from homeassistant.exceptions import PlatformNotReady
-# from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
-# from homeassistant.util import Throttle
 
 REQUIREMENTS = ['pynetgear-enhanced==0.1.0']
 
@@ -27,26 +24,27 @@ _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_HOST = '192.168.1.1'
 DEFAULT_PORT = '5000'
+DEFAULT_PREFIX = 'ng_enhanced'
 
 SCAN_INTERVAL = timedelta(minutes=5)
 
 SENSOR_TYPES = {
-    'check_fw': [
+    'firmware': [
         'Firmware', 'CurrentVersion',
         'mdi:cellphone-link', 'check_new_firmware'],
-    'block_device_status': [
+    'access_control_on': [
         'Access Control Status', 'NewBlockDeviceEnable',
         'mdi:router-wireless-settings', 'get_block_device_enable_status'],
     'traffic_meter': [
         'Traffic Meter', 'NewTodayConnectionTime',
         'mdi:chart-areaspline', 'get_traffic_meter_statistics'],
-    'traffic_meter_enabled': [
+    'traffic_meter_on': [
         'Traffic Meter Enabled', 'NewTrafficMeterEnable',
         'mdi:chart-areaspline', 'get_traffic_meter_enabled'],
     'traffic_meter_options': [
         'Traffic Meter Opt', 'NewControlOption',
         'mdi:chart-areaspline', 'get_traffic_meter_options'],
-    'parental_control_status': [
+    'parental_control_on': [
         'Parental Control Enabled', 'ParentalControl',
         'mdi:router-wireless-settings', 'get_parental_control_enable_status'],
     'mac_address': [
@@ -58,7 +56,7 @@ SENSOR_TYPES = {
     'info': [
         'Info', 'ModelName',
         'mdi:router-wireless', 'get_info'],
-    'support_feature': [
+    'supported_features': [
         'Supported Features', '',
         'mdi:router-wireless-settings', 'get_support_feature_list_XML'],
     'speed_test_result': [
@@ -70,28 +68,28 @@ SENSOR_TYPES = {
     'bw_control': [
         'Bandwidth Control', '',
         'mdi:router-wireless-settings', 'get_bandwidth_control_options'],
-    'guest_access': [
+    '2g_guest_wifi_on': [
         '2G Guest Wifi', 'NewGuestAccessEnabled',
         'mdi:account-group', 'get_guest_access_enabled'],
-    'guest_access_5g': [
+    '5g_guest_wifi_on': [
         '5G Guest Wifi', 'NewGuestAccessEnabled',
         'mdi:account-group', 'get_5g_guest_access_enabled'],
-    'wpa_key': [
+    '2g_wpa_key': [
         'WPA Security Key', 'NewWPAPassphrase',
         'mdi:security', 'get_wpa_security_keys'],
-    'wpa_key_5g': [
+    '5g_wpa_key': [
         '5G WPA Security Key', 'NewWPAPassphrase',
         'mdi:security', 'get_5g_wpa_security_keys'],
-    'get_2g_info': [
+    '2g_wifi_info': [
         '2G Info', 'NewSSID',
         'mdi:signal-2g', 'get_2g_info'],
-    'get_5g_info': [
+    '5g_wifi_info': [
         '5G Info', 'NewSSID',
         'mdi:signal-5g', 'get_5g_info'],
-    'guest_access_net': [
+    '2g_guest_wifi_info': [
         '2G Guest Wifi Info', 'NewSSID',
         'mdi:signal-2g', 'get_guest_access_network_info'],
-    'guest_access_net_5g': [
+    '5g_guest_wifi_info': [
         '5G Guest Wifi Info', 'NewSSID',
         'mdi:signal-5g', 'get_5g_guest_access_network_info'],
 }
@@ -121,10 +119,11 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 
     _LOGGER.debug("NETGEAR: setup_platform")
 
+    args = [password, host, username, port, ssl]
     sensors = []
     for kind in resources:
         sensors.append(NetgearEnhancedSensor(
-            host, ssl, username, password, port, kind, scan_interval)
+            args, kind, scan_interval)
         )
 
     add_devices(sensors, True)
@@ -133,31 +132,25 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
 class NetgearEnhancedSensor(Entity):
     """Representation of a Sensor."""
 
-    def __init__(self, host, ssl, username, password, port, kind, scan_interval):  # noqa
+    def __init__(self, args, kind, scan_interval):
         """Initialize the sensor."""
-        # if isinstance(kind, str):
-        #    self._unique_id = "ng_enhanced_%s" % (kind)
-        # else:
-        #    self._unique_id = None
-        # _LOGGER.debug("ng_enhanced_%s", kind)
-        self._name = f"NG {SENSOR_TYPES[kind][0]}"
+        self._name = SENSOR_TYPES[kind][0]
+        self.entity_id = "sensor.{}_{}".format(DEFAULT_PREFIX, kind)
         self._state = None
-        if len(SENSOR_TYPES[kind]) > 4:
-            self._unit_of_measurement = SENSOR_TYPES[kind][4]
-        else:
-            self._unit_of_measurement = ''
         self._state_key = SENSOR_TYPES[kind][1]
         self._attrs = None
         self._icon = SENSOR_TYPES[kind][2]
         self._function = SENSOR_TYPES[kind][3]
         self._scan_interval = scan_interval
+        if len(SENSOR_TYPES[kind]) > 4:
+            self._unit_of_measurement = SENSOR_TYPES[kind][4]
+        else:
+            self._unit_of_measurement = ''
 
         from pynetgear_enhanced import NetgearEnhanced
-        self._api = NetgearEnhanced(password, host, username, port, ssl)
-
-    # def unique_id(self):
-    #    """Return the _unique_id of the sensor."""
-    #    return self._unique_id
+        self._api = NetgearEnhanced(
+            args[0], args[1], args[2], args[3], args[4]
+            )
 
     @property
     def name(self):

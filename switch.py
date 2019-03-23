@@ -23,12 +23,13 @@ _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_HOST = '192.168.1.1'
 DEFAULT_PORT = '5000'
+DEFAULT_PREFIX = 'ng_enhanced'
 
 SCAN_INTERVAL = timedelta(minutes=5)
 # Name, onoffFunction, Checkfunction, checkNode
 SWITCH_TYPES = {
-    'block_device': [
-        'Block Device', 'set_block_device_enable',
+    'access_control': [
+        'Access Control', 'set_block_device_enable',
         'get_block_device_enable_status', 'NewBlockDeviceEnable'],
     'traffic_meter': [
         'Traffic Meter', 'enable_traffic_meter',
@@ -39,10 +40,10 @@ SWITCH_TYPES = {
     'qos': [
         'QOS', 'set_qos_enable_status',
         'get_qos_enable_status', 'NewQoSEnableStatus'],
-    'guest_wifi': [
+    '2g_guest_wifi': [
         'Guest Wifi', 'set_guest_access_enabled',
         'get_guest_access_enabled', 'NewGuestAccessEnabled'],
-    'guest_wifi_5g': [
+    '5g_guest_wifi': [
         '5G Guest Wifi', 'set_5g_guest_access_enabled',
         'get_5g_guest_access_enabled', 'NewGuestAccessEnabled'],
 }
@@ -69,10 +70,11 @@ def setup_platform(hass, config, add_entities_callback, discovery_info=None):
 
     _LOGGER.debug("NETGEAR: Setup Switches")
 
+    args = [password, host, username, port, ssl]
     switches = []
     for kind in SWITCH_TYPES:
         switches.append(NetgearEnhancedSwitch(
-            host, ssl, username, password, port, kind, scan_interval)
+            args, kind, scan_interval)
         )
 
     add_entities_callback(switches)
@@ -81,11 +83,10 @@ def setup_platform(hass, config, add_entities_callback, discovery_info=None):
 class NetgearEnhancedSwitch(SwitchDevice):
     """Representation of a netgear enhanced switch."""
 
-    def __init__(
-        self, host, ssl, username, password, port, kind, scan_interval
-    ):
+    def __init__(self, args, kind, scan_interval):
         """Initialize the netgear enhanced switch."""
-        self._name = f"NG {SWITCH_TYPES[kind][0]}"
+        self._name = SWITCH_TYPES[kind][0]
+        self.entity_id = "switch.{}_{}".format(DEFAULT_PREFIX, kind)
         self._nfFunction = SWITCH_TYPES[kind][1]
         self._cFunction = SWITCH_TYPES[kind][2]
         self._cNode = SWITCH_TYPES[kind][3]
@@ -94,7 +95,9 @@ class NetgearEnhancedSwitch(SwitchDevice):
         self._scan_interval = scan_interval
 
         from pynetgear_enhanced import NetgearEnhanced
-        self._api = NetgearEnhanced(password, host, username, port, ssl)
+        self._api = NetgearEnhanced(
+            args[0], args[1], args[2], args[3], args[4]
+            )
 
     @property
     def should_poll(self):

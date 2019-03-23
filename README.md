@@ -46,27 +46,27 @@
     username: !secret my_secret_netgear_user
     password: !secret my_secret_netgear_pass
     resources:
-      - check_fw
-      - block_device_status
+      - firmware
+      - access_control_on
       - traffic_meter
-      - traffic_meter_enabled
+      - traffic_meter_on
       - traffic_meter_options
-      - parental_control_status
+      - parental_control_on
       - mac_address
       #- dns_masq
       - info
-      - support_feature
+      - supported_features
       - speed_test_result
       - qos_enabled
       - bw_control
-      - guest_access
-      - guest_access_5g
-      - wpa_key
-      - wpa_key_5g
-      - get_2g_info
-      - get_5g_info
-      - guest_access_net
-      - guest_access_net_5g
+      - 2g_guest_wifi_on
+      - 5g_guest_wifi_on
+      - 2g_wpa_key
+      - 5g_wpa_key
+      - 2g_wifi_info
+      - 5g_wifi_info
+      - 2g_guest_wifi_info
+      - 5g_guest_wifi_info
 ```
 
 ## For switches ##
