@@ -17,7 +17,7 @@ from homeassistant.const import (
 
 import homeassistant.helpers.config_validation as cv
 
-REQUIREMENTS = ['https://github.com/roblandry/pynetgear_enhanced/archive/master.zip#pynetgear_enhanced']  # noqa
+REQUIREMENTS = ['pynetgear-enhanced==0.1.0']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ SWITCH_TYPES = {
         'get_parental_control_enable_status', 'ParentalControl'],
     'qos': [
         'QOS', 'set_qos_enable_status',
-        'getQoSEnableStatus', 'NewQoSEnableStatus'],
+        'get_qos_enable_status', 'NewQoSEnableStatus'],
     'guest_wifi': [
         'Guest Wifi', 'set_guest_access_enabled',
         'get_guest_access_enabled', 'NewGuestAccessEnabled'],
@@ -93,8 +93,8 @@ class NetgearEnhancedSwitch(SwitchDevice):
         self._icon = None
         self._scan_interval = scan_interval
 
-        from pynetgear_enhanced import Netgear
-        self._api = Netgear(password, host, username, port, ssl)
+        from pynetgear_enhanced import NetgearEnhanced
+        self._api = NetgearEnhanced(password, host, username, port, ssl)
 
     @property
     def should_poll(self):

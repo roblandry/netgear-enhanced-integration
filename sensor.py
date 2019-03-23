@@ -21,7 +21,7 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
 # from homeassistant.util import Throttle
 
-REQUIREMENTS = ['https://github.com/roblandry/pynetgear_enhanced/archive/master.zip#pynetgear_enhanced']  # noqa
+REQUIREMENTS = ['pynetgear-enhanced==0.1.0']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -35,7 +35,7 @@ SENSOR_TYPES = {
         'Firmware', 'CurrentVersion',
         'mdi:cellphone-link', 'check_new_firmware'],
     'block_device_status': [
-        'Block Device Status', 'NewBlockDeviceEnable',
+        'Access Control Status', 'NewBlockDeviceEnable',
         'mdi:router-wireless-settings', 'get_block_device_enable_status'],
     'traffic_meter': [
         'Traffic Meter', 'NewTodayConnectionTime',
@@ -57,24 +57,24 @@ SENSOR_TYPES = {
         'mdi:router-wireless-settings', 'get_dns_masq_device_id'],
     'info': [
         'Info', 'ModelName',
-        'mdi:router-wireless', 'getInfo'],
+        'mdi:router-wireless', 'get_info'],
     'support_feature': [
         'Supported Features', '',
-        'mdi:router-wireless-settings', 'getSupportFeatureListXML'],
+        'mdi:router-wireless-settings', 'get_support_feature_list_XML'],
     'speed_test_result': [
         'Speed Test Result', 'NewOOKLADownlinkBandwidth',
         'mdi:speedometer', 'get_speed_test_result', 'Mbps'],
     'qos_enabled': [
         'QOS Enabled', 'NewQoSEnableStatus',
-        'mdi:router-wireless-settings', 'getQoSEnableStatus'],
+        'mdi:router-wireless-settings', 'get_qos_enable_status'],
     'bw_control': [
         'Bandwidth Control', '',
         'mdi:router-wireless-settings', 'get_bandwidth_control_options'],
     'guest_access': [
-        'Guest Access', 'NewGuestAccessEnabled',
+        '2G Guest Wifi', 'NewGuestAccessEnabled',
         'mdi:account-group', 'get_guest_access_enabled'],
     'guest_access_5g': [
-        '5G Guest Access', 'NewGuestAccessEnabled',
+        '5G Guest Wifi', 'NewGuestAccessEnabled',
         'mdi:account-group', 'get_5g_guest_access_enabled'],
     'wpa_key': [
         'WPA Security Key', 'NewWPAPassphrase',
@@ -89,10 +89,10 @@ SENSOR_TYPES = {
         '5G Info', 'NewSSID',
         'mdi:signal-5g', 'get_5g_info'],
     'guest_access_net': [
-        'Guest Network Info', 'NewSSID',
+        '2G Guest Wifi Info', 'NewSSID',
         'mdi:signal-2g', 'get_guest_access_network_info'],
     'guest_access_net_5g': [
-        '5G Guest Network Info', 'NewSSID',
+        '5G Guest Wifi Info', 'NewSSID',
         'mdi:signal-5g', 'get_5g_guest_access_network_info'],
 }
 
@@ -152,8 +152,8 @@ class NetgearEnhancedSensor(Entity):
         self._function = SENSOR_TYPES[kind][3]
         self._scan_interval = scan_interval
 
-        from pynetgear_enhanced import Netgear
-        self._api = Netgear(password, host, username, port, ssl)
+        from pynetgear_enhanced import NetgearEnhanced
+        self._api = NetgearEnhanced(password, host, username, port, ssl)
 
     # def unique_id(self):
     #    """Return the _unique_id of the sensor."""

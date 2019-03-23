@@ -1,9 +1,9 @@
 # Supported #
 **The supported sensors are:**
 * Check Firmware
-* Block Device Enabled
+* Access Control Status
 * Traffic Meter Statistics
-* Traffic Meter Enabled
+* Traffic Meter Status
 * Traffic Meter Options
 * Parental Control Enabled
 * MAC Addresses
@@ -13,18 +13,18 @@
 * Speed Test Resluts
 * QOS Enabled
 * Bandwidth Control
-* 2.4g Guest Access Enabled
-* 5g Guest Access Enabled
+* 2.4g Guest Access Status
+* 5g Guest Access Status
 * 2.4g WPA Key
 * 5g WPA Key
-* 2.4g Info
-* 5g Info
-* 2.4g Guest Network Info
-* 5g Guest Network Info
+* 2.4g Wifi Info
+* 5g Wifi Info
+* 2.4g Guest Wifi Info
+* 5g Guest Wifi Info
 
 
 **The supported switches are:**
-* Block Device
+* Access Control
 * Traffic Meter
 * Parental Control
 * QOS
