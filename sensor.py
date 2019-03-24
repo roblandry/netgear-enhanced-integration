@@ -18,7 +18,7 @@ from homeassistant.const import (
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
 
-REQUIREMENTS = ['pynetgear-enhanced==0.1.0']
+REQUIREMENTS = ['pynetgear-enhanced==0.1.1']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -117,7 +117,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     resources = config[CONF_RESOURCES]
     scan_interval = config.get(CONF_SCAN_INTERVAL, SCAN_INTERVAL)
 
-    _LOGGER.debug("NETGEAR: setup_platform")
+    _LOGGER.debug("NETGEAR: Setup Sensors")
 
     args = [password, host, username, port, ssl]
     sensors = []
@@ -135,7 +135,7 @@ class NetgearEnhancedSensor(Entity):
     def __init__(self, args, kind, scan_interval):
         """Initialize the sensor."""
         self._name = SENSOR_TYPES[kind][0]
-        self.entity_id = "sensor.{}_{}".format(DEFAULT_PREFIX, kind)
+        self.entity_id = f"sensor.{DEFAULT_PREFIX}_{kind}"
         self._state = None
         self._state_key = SENSOR_TYPES[kind][1]
         self._attrs = None
@@ -151,6 +151,8 @@ class NetgearEnhancedSensor(Entity):
         self._api = NetgearEnhanced(
             args[0], args[1], args[2], args[3], args[4]
             )
+
+        self.update()
 
     @property
     def name(self):

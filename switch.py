@@ -17,8 +17,7 @@ from homeassistant.const import (
 
 import homeassistant.helpers.config_validation as cv
 
-REQUIREMENTS = ['pynetgear-enhanced==0.1.0']
-
+REQUIREMENTS = ['pynetgear-enhanced==0.1.1']
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_HOST = '192.168.1.1'
@@ -48,6 +47,9 @@ SWITCH_TYPES = {
         'get_5g_guest_access_enabled', 'NewGuestAccessEnabled'],
     'run_speed_test': [
         'Run a Speed Test', 'set_speed_test_start',
+        '', ''],
+    'reboot': [
+        'Reboot Router', 'reboot',
         '', ''],
 }
 
@@ -89,11 +91,11 @@ class NetgearEnhancedSwitch(SwitchDevice):
     def __init__(self, args, kind, scan_interval):
         """Initialize the netgear enhanced switch."""
         self._name = SWITCH_TYPES[kind][0]
-        self.entity_id = "switch.{}_{}".format(DEFAULT_PREFIX, kind)
+        self.entity_id = f"switch.{DEFAULT_PREFIX}_{kind}"
         self._nfFunction = SWITCH_TYPES[kind][1]
         self._cFunction = SWITCH_TYPES[kind][2]
         self._cNode = SWITCH_TYPES[kind][3]
-        self._state = None
+        self._is_on = None
         self._icon = None
         self._scan_interval = scan_interval
 
@@ -101,6 +103,8 @@ class NetgearEnhancedSwitch(SwitchDevice):
         self._api = NetgearEnhanced(
             args[0], args[1], args[2], args[3], args[4]
             )
+
+        self.update()
 
     @property
     def should_poll(self):
@@ -120,31 +124,46 @@ class NetgearEnhancedSwitch(SwitchDevice):
     @property
     def is_on(self):
         """Return true if switch is on."""
-        if self._nfFunction == 'set_speed_test_start':
-            self._state = False
-            return self._state
+        _LOGGER.debug("Netgear Switch: check if %s is on.", self._name)
+        if self._nfFunction in ('set_speed_test_start', 'reboot'):
+            self._is_on = False
 
-        self.response = getattr(self._api, self._cFunction)()
-
-        if self.response:
-            toCheck = self.response[self._cNode]
-            if toCheck == '1':
-                self._state = True
-        else:
-            self._state = False
-
-        return self._state
+        return self._is_on
 
     def turn_on(self, **kwargs):
         """Turn the switch on."""
-        self.response = getattr(self._api, self._nfFunction)('True')
+        _LOGGER.debug("Netgear Switch: Turning on %s", self._name)
+        getattr(self._api, self._nfFunction)('True')
 
-        self._state = True
+        self._is_on = True
         self.schedule_update_ha_state()
 
     def turn_off(self, **kwargs):
         """Turn the device off."""
-        self.response = getattr(self._api, self._nfFunction)('False')
+        _LOGGER.debug("Netgear Switch: Turning off %s", self._name)
+        getattr(self._api, self._nfFunction)('False')
 
-        self._state = False
+        self._is_on = False
         self.schedule_update_ha_state()
+
+    def update(self):
+        """Check if is on."""
+        # https://goo.gl/Nvioub
+        _LOGGER.debug("Netgear Switch update function")
+        toCheck = ''
+
+        self._is_on = False
+
+        if self._cFunction:
+            response = getattr(self._api, self._cFunction)()
+
+            if response:
+                toCheck = response[self._cNode]
+
+                if toCheck == '1':
+                    self._is_on = True
+
+        theLog = f"{self._name}: {toCheck}: {self._is_on}"
+        _LOGGER.debug("Netgear Switch %s", theLog)
+
+        return self._is_on
