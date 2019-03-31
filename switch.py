@@ -17,6 +17,7 @@ from homeassistant.const import (
 
 import homeassistant.helpers.config_validation as cv
 
+VERSION = '0.1.0'
 REQUIREMENTS = ['pynetgear-enhanced==0.1.1']
 _LOGGER = logging.getLogger(__name__)
 

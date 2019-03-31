@@ -1,0 +1,1 @@
+"""Netgear Enhanced Component."""

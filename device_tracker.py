@@ -15,6 +15,8 @@ from homeassistant.const import (
     CONF_HOST, CONF_PASSWORD, CONF_USERNAME, CONF_PORT, CONF_SSL,
     CONF_DEVICES, CONF_EXCLUDE)
 
+VERSION = '0.1.0'
+
 REQUIREMENTS = ['pynetgear-enhanced==0.1.1']
 
 _LOGGER = logging.getLogger(__name__)
