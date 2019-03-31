@@ -60,14 +60,14 @@ class NetgearDeviceScanner(DeviceScanner):
     def __init__(self, host, ssl, username, password, port, devices,
                  excluded_devices, accesspoints):
         """Initialize the scanner."""
-        import pynetgear
+        from pynetgear_enhanced import NetgearEnhanced
 
         self.tracked_devices = devices
         self.excluded_devices = excluded_devices
         self.tracked_accesspoints = accesspoints
 
         self.last_results = []
-        self._api = pynetgear.Netgear(password, host, username, port, ssl)
+        self._api = NetgearEnhanced(password, host, username, port, ssl)
 
         _LOGGER.info("Logging in")
 
