@@ -18,9 +18,9 @@ from homeassistant.const import (
 import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity import Entity
 
-VERSION = '0.1.0'
+VERSION = '0.2.0'
 
-REQUIREMENTS = ['pynetgear-enhanced==0.1.1']
+REQUIREMENTS = ['pynetgear-enhanced==0.2.2']
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -34,6 +34,12 @@ SENSOR_TYPES = {
     'firmware': [
         'Firmware', 'CurrentVersion',
         'mdi:cellphone-link', 'check_new_firmware'],
+    'check_app_fw': [
+        'App Firmware', 'BlankState',
+        'mdi:cellphone-link', 'check_app_new_firmware'],
+    'get_device_config_info': [
+        'Device Config', 'BlankState',
+        'mdi:router-wireless-settings', 'get_device_config_info'],
     'access_control_on': [
         'Access Control Status', 'NewBlockDeviceEnable',
         'mdi:router-wireless-settings', 'get_block_device_enable_status'],
@@ -46,6 +52,21 @@ SENSOR_TYPES = {
     'traffic_meter_options': [
         'Traffic Meter Opt', 'NewControlOption',
         'mdi:chart-areaspline', 'get_traffic_meter_options'],
+    # ---------------------
+    # SERVICE_LAN_CONFIG_SECURITY
+    # ---------------------
+    'get_lan_config_info': [
+        'LAN Config', 'NewLANIP',
+        'mdi:router-wireless-settings', 'get_lan_config_sec_info'],
+    # ---------------------
+    # SERVICE_WAN_IP_CONNECTION
+    # ---------------------
+    'get_wan_ip_info': [
+        'WAN Info', 'NewExternalIPAddress',
+        'mdi:router-wireless-settings', 'get_wan_ip_con_info'],
+    # ---------------------
+    # SERVICE_PARENTAL_CONTROL
+    # ---------------------
     'parental_control_on': [
         'Parental Control Enabled', 'ParentalControl',
         'mdi:router-wireless-settings', 'get_parental_control_enable_status'],
@@ -55,12 +76,24 @@ SENSOR_TYPES = {
     'dns_masq': [
         'DNS Masq', '',
         'mdi:router-wireless-settings', 'get_dns_masq_device_id'],
+    # ---------------------
+    # SERVICE_DEVICE_INFO
+    # ---------------------
     'info': [
         'Info', 'ModelName',
         'mdi:router-wireless', 'get_info'],
     'supported_features': [
         'Supported Features', '',
         'mdi:router-wireless-settings', 'get_support_feature_list_XML'],
+    #'attached_devices': [
+    #    '', '',
+    #    'mdi:', 'get_attached_devices'],
+    #'attached_devices2': [
+    #    '', '',
+    #    'mdi:', 'get_attached_devices2'],
+    # ---------------------
+    # SERVICE_ADVANCED_QOS
+    # ---------------------
     'speed_test_result': [
         'Speed Test Result', 'NewOOKLADownlinkBandwidth',
         'mdi:speedometer', 'get_speed_test_result', 'Mbps'],
@@ -70,6 +103,9 @@ SENSOR_TYPES = {
     'bw_control': [
         'Bandwidth Control', '',
         'mdi:router-wireless-settings', 'get_bandwidth_control_options'],
+    # ---------------------
+    # SERVICE_WLAN_CONFIGURATION
+    # ---------------------
     '2g_guest_wifi_on': [
         '2G Guest Wifi', 'NewGuestAccessEnabled',
         'mdi:account-group', 'get_guest_access_enabled'],
@@ -88,12 +124,18 @@ SENSOR_TYPES = {
     '5g_wifi_info': [
         '5G Info', 'NewSSID',
         'mdi:signal-5g', 'get_5g_info'],
+    'get_channel': [
+        'Channel', 'NewChannel',
+        'mdi:router-wireless-settings', 'get_available_channel'],
     '2g_guest_wifi_info': [
         '2G Guest Wifi Info', 'NewSSID',
         'mdi:signal-2g', 'get_guest_access_network_info'],
     '5g_guest_wifi_info': [
         '5G Guest Wifi Info', 'NewSSID',
         'mdi:signal-5g', 'get_5g_guest_access_network_info'],
+    'get_smart_conn': [
+        'Smart Connect', '',
+        'mdi:router-wireless-settings', 'get_smart_connect_enabled'],
 }
 
 

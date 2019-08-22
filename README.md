@@ -1,26 +1,32 @@
 # Supported #
 **The supported sensors are:**
-* Check Firmware
+* Firmware
+* App Firmware :new:
+* Device Config :new:
 * Access Control Status
-* Traffic Meter Statistics
-* Traffic Meter Status
-* Traffic Meter Options
+* Traffic Meter
+* Traffic Meter Enabled
+* Traffic Meter Opt
+* LAN Config :new:
+* WAN Info :new:
 * Parental Control Enabled
-* MAC Addresses
-* DNS Masq # Not currently working correctly
-* Get Router Info
+* All MAC Addresses
+* DNS Masq
+* Info
 * Supported Features
-* Speed Test Resluts
+* Speed Test Result
 * QOS Enabled
 * Bandwidth Control
-* 2.4g Guest Access Status
-* 5g Guest Access Status
-* 2.4g WPA Key
-* 5g WPA Key
-* 2.4g Wifi Info
-* 5g Wifi Info
-* 2.4g Guest Wifi Info
-* 5g Guest Wifi Info
+* 2G Guest Wifi
+* 5G Guest Wifi
+* WPA Security Key
+* 5G WPA Security Key
+* 2G Info
+* 5G Info
+* Channel :new:
+* 2G Guest Wifi Info
+* 5G Guest Wifi Info
+* Smart Connect :new:
 
 
 **The supported switches are:**
@@ -49,13 +55,17 @@
     password: !secret my_secret_netgear_pass
     resources:
       - firmware
+      - check_app_fw
+      - get_device_config_info
       - access_control_on
       - traffic_meter
       - traffic_meter_on
       - traffic_meter_options
+      - get_lan_config_info
+      - get_wan_ip_info
       - parental_control_on
       - mac_address
-      #- dns_masq
+      - dns_masq
       - info
       - supported_features
       - speed_test_result
@@ -67,8 +77,10 @@
       - 5g_wpa_key
       - 2g_wifi_info
       - 5g_wifi_info
+      - get_channel
       - 2g_guest_wifi_info
       - 5g_guest_wifi_info
+      - get_smart_conn
 ```
 
 ## For switches ##

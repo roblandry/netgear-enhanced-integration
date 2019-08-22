@@ -17,8 +17,8 @@ from homeassistant.const import (
 
 import homeassistant.helpers.config_validation as cv
 
-VERSION = '0.1.0'
-REQUIREMENTS = ['pynetgear-enhanced==0.1.1']
+VERSION = '0.2.0'
+REQUIREMENTS = ['pynetgear-enhanced==0.2.2']
 _LOGGER = logging.getLogger(__name__)
 
 DEFAULT_HOST = '192.168.1.1'
