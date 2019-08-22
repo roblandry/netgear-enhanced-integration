@@ -42,7 +42,7 @@
 
 # Setup #
 * Create the netgear_enhanced folder in custom_components.
-* Copy the sensor.py and switch.py files to the netgear_enhanced folder.
+* Copy the files to the netgear_enhanced folder.
 
 ## For sensors ##
 * Place the following code in your config under sensor:
