@@ -92,4 +92,13 @@
     host: !secret my_secret_ip
     username: !secret my_secret_netgear_user
     password: !secret my_secret_netgear_pass
+    resources:
+      - 'access_control'
+      - 'traffic_meter'
+      - 'parental_control'
+      - 'qos'
+      - '2g_guest_wifi'
+      - '5g_guest_wifi'
+      - 'run_speed_test'
+      - 'reboot'
 ```
