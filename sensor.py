@@ -146,7 +146,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_USERNAME): cv.string,
     vol.Required(CONF_PASSWORD): cv.string,
     vol.Optional(CONF_SSL, default=False): cv.boolean,
-    vol.Optional(CONF_RESOURCES, default=['getInfo']):
+    vol.Optional(CONF_RESOURCES, default=['info']):
         vol.All(cv.ensure_list, [vol.In(SENSOR_TYPES)]),
 })
 

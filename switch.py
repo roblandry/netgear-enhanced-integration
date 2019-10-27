@@ -12,7 +12,7 @@ from datetime import timedelta
 from homeassistant.components.switch import SwitchDevice, PLATFORM_SCHEMA
 from homeassistant.const import (
     CONF_HOST, CONF_PORT, CONF_USERNAME, CONF_PASSWORD,
-    CONF_SSL, CONF_SCAN_INTERVAL
+    CONF_SSL, CONF_RESOURCES, CONF_SCAN_INTERVAL
     )
 
 import homeassistant.helpers.config_validation as cv
@@ -62,6 +62,8 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend({
     vol.Optional(CONF_USERNAME): cv.string,
     vol.Required(CONF_PASSWORD): cv.string,
     vol.Optional(CONF_SSL, default=False): cv.boolean,
+    vol.Optional(CONF_RESOURCES, default=['access_control', 'traffic_meter', 'parental_control', 'qos', '2g_guest_wifi', '5g_guest_wifi', 'run_speed_test', 'reboot']):
+        vol.All(cv.ensure_list, [vol.In(SWITCH_TYPES)]),
 })
 
 
@@ -73,12 +75,13 @@ def setup_platform(hass, config, add_entities_callback, discovery_info=None):
     password = config[CONF_PASSWORD]
     ssl = config[CONF_SSL]
     scan_interval = config.get(CONF_SCAN_INTERVAL, SCAN_INTERVAL)
+    resources = config[CONF_RESOURCES]
 
     _LOGGER.debug("NETGEAR: Setup Switches")
 
     args = [password, host, username, port, ssl]
     switches = []
-    for kind in SWITCH_TYPES:
+    for kind in resources:
         switches.append(NetgearEnhancedSwitch(
             args, kind, scan_interval)
         )
