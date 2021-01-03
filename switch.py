@@ -9,7 +9,7 @@ import logging
 import voluptuous as vol
 from datetime import timedelta
 
-from homeassistant.components.switch import SwitchDevice, PLATFORM_SCHEMA
+from homeassistant.components.switch import SwitchEntity, PLATFORM_SCHEMA
 from homeassistant.const import (
     CONF_HOST, CONF_PORT, CONF_USERNAME, CONF_PASSWORD,
     CONF_SSL, CONF_RESOURCES, CONF_SCAN_INTERVAL
@@ -89,7 +89,7 @@ def setup_platform(hass, config, add_entities_callback, discovery_info=None):
     add_entities_callback(switches)
 
 
-class NetgearEnhancedSwitch(SwitchDevice):
+class NetgearEnhancedSwitch(SwitchEntity):
     """Representation of a netgear enhanced switch."""
 
     def __init__(self, args, kind, scan_interval):
