@@ -3,6 +3,7 @@
   "name": "Netgear Enhanced",
   "documentation": "https://gitlab.landry.me/Home-Assistant/custom_components/netgear-enhanced-sensor",
   "dependencies": [],
+  "version": "v0.0.1",
   "codeowners": ["@bigrob8181"],
   "requirements": ["pynetgear-enhanced==0.2.2"]
 }
