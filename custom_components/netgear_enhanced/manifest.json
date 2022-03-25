@@ -3,6 +3,7 @@
   "name": "Netgear Enhanced",
   "documentation": "https://github.com/roblandry/netgear-enhanced-integration",
   "dependencies": [],
+  "version": "v0.0.1",
   "codeowners": ["@roblandry"],
   "requirements": ["pynetgear-enhanced==0.2.2"]
 }
